@@ -1,0 +1,28 @@
+services:
+  inventory:
+    build:
+      context: .
+      dockerfile: services/inventory/Dockerfile
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import httpx; httpx.get('http://localhost:8001/health').raise_for_status()
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  orders:
+    build:
+      context: .
+      dockerfile: services/orders/Dockerfile
+    environment:
+      INVENTORY_URL: http://inventory:8001
+    ports:
+      - "8002:8002"
+    depends_on:
+      inventory:
+        condition: service_healthy
