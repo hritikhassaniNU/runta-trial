@@ -1,0 +1,14 @@
+{
+  "service": "inventory",
+  "version": "1.0.0",
+  "endpoint": "GET /inventory/{sku}",
+  "response": {
+    "type": "object",
+    "required": ["sku", "available"],
+    "properties": {
+      "sku": { "type": "string" },
+      "available": { "type": "integer" }
+    },
+    "additionalProperties": false
+  }
+}

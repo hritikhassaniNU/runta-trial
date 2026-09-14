@@ -1,0 +1,61 @@
+services:
+  inventory:
+    build:
+      context: .
+      dockerfile: demo-system/inventory/Dockerfile
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import httpx; httpx.get('http://localhost:8001/health').raise_for_status()
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  orders:
+    build:
+      context: .
+      dockerfile: demo-system/orders/Dockerfile
+    environment:
+      INVENTORY_URL: http://inventory:8001
+    ports:
+      - "8002:8002"
+    depends_on:
+      inventory:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - rootscope-data:/repo/data
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import httpx; httpx.get('http://localhost:8000/health').raise_for_status()
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      API_UPSTREAM: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  rootscope-data:

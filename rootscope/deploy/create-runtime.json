@@ -1,0 +1,65 @@
+{
+  "name": "rootscope",
+  "resources": {
+    "requests": {
+      "vcpus": 4,
+      "memory_mib": 8192
+    },
+    "limits": {
+      "memory_mib": 8192
+    }
+  },
+  "image": {
+    "id": "codex",
+    "model_provider_protocol": "openai_responses",
+    "runtime_sign_in": false,
+    "model_provider_model": "gpt-4.1"
+  },
+  "environment_variables": {
+    "OPENAI_MODEL": "gpt-4.1"
+  },
+  "egress_policy": {
+    "mode": "denylist",
+    "denied_hosts": []
+  },
+  "idle_policy": {
+    "mode": "disabled"
+  },
+  "ingress_specs": [
+    {
+      "protocol": "https",
+      "runtime_port": 3000
+    }
+  ],
+  "secret_configuration": [
+    {
+      "secret_id": "REPLACE_WITH_RUNTA_SECRET_ID",
+      "environment": [
+        {
+          "name": "OPENAI_API_KEY",
+          "value_template": "${secret}"
+        }
+      ],
+      "egress_rules": [
+        {
+          "host_pattern": "api.openai.com",
+          "path_pattern": "/v1/*",
+          "action": "header",
+          "name": "Authorization",
+          "value_template": "Bearer ${secret}"
+        }
+      ],
+      "files": []
+    }
+  ],
+  "ssh_key_ids": [],
+  "vnc_enabled": false,
+  "repositories": [],
+  "llm_tool_io_capture_enabled": true,
+  "llm_token_saving_policy": {
+    "json_array_enabled": true,
+    "log_enabled": true,
+    "search_results_enabled": true,
+    "git_diff_enabled": true
+  }
+}

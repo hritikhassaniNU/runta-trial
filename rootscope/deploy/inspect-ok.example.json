@@ -1,0 +1,33 @@
+{
+  "runtime": {
+    "name": "rootscope",
+    "llm_tool_io_capture_enabled": true,
+    "llm_token_saving_policy": {
+      "json_array_enabled": true,
+      "log_enabled": true,
+      "search_results_enabled": true,
+      "git_diff_enabled": true
+    },
+    "secret_configuration": [
+      {
+        "secret_id": "REPLACE_WITH_RUNTA_SECRET_ID",
+        "environment": [
+          {
+            "name": "OPENAI_API_KEY",
+            "value_template": "${secret}"
+          }
+        ],
+        "egress_rules": [
+          {
+            "host_pattern": "api.openai.com",
+            "path_pattern": "/v1/*",
+            "action": "header",
+            "name": "Authorization",
+            "value_template": "Bearer ${secret}"
+          }
+        ],
+        "files": []
+      }
+    ]
+  }
+}
