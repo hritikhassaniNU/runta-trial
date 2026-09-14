@@ -1,0 +1,22 @@
+# Local Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+
+# Trial material
+notes/
+results/
+screenshots/
+submission/
+
+# Local trial task
+repo-doctor/Issue.md
+
+# Secrets
+.env
+.env.*
+!**/.env.example
+.sdk-venv/
