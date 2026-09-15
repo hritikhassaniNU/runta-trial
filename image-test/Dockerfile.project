@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       git \
+       curl \
+       ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install --no-cache-dir pytest
+
+RUN mkdir -p /workspace/repo-doctor \
+    && echo "repo-doctor-runta-image" > /workspace/IMAGE_BUILD_PROOF.txt
+
+WORKDIR /workspace/repo-doctor

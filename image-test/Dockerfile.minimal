@@ -1,0 +1,5 @@
+FROM python:3.12-slim
+
+RUN echo "built-with-runta-custom-image" > /opt/runta-image-proof.txt
+
+WORKDIR /root
