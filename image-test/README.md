@@ -8,4 +8,4 @@ These Dockerfiles were used to separate Dockerfile validity from Runta's managed
 
 `Dockerfile.project` built and ran successfully as `linux/amd64` outside the managed image service. Docker also worked inside a Runta runtime; the nested child image needed Runta's egress CA added to its trust store before `pip` could reach PyPI.
 
-The managed Runtime Image tests produced two distinct Runta-side states during the trial: backend retries ending in `cloud_build_staging_failed`, and later builds that remained `pending` at attempt 0. Raw build records are retained under `../results/image-test/`.
+The managed Runtime Image tests produced two distinct Runta-side states during the trial: backend retries ending in `cloud_build_staging_failed`, and later builds that remained `pending` at attempt 0.
